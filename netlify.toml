@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Optional: Handle dynamic routes if needed, otherwise Next.js static export handles standard paths
