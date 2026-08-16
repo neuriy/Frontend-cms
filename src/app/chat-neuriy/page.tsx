@@ -3,12 +3,14 @@
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { useState } from 'react';
-import { Bot, Send, User } from 'lucide-react';
+import Link from 'next/link';
+import { Bot, Send, User, Shield } from 'lucide-react';
+import { NeuriyAuthGuard } from '@neuriy/auth';
 
-export default function ChatNeuriy() {
+function ChatNeuriyInner() {
   const [model, setModel] = useState('chatgpt');
   const [input, setInput] = useState('');
-  
+
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat-neuriy',
@@ -27,12 +29,12 @@ export default function ChatNeuriy() {
     setInput('');
   };
 
-  const getMessageText = (m: any) => {
+  const getMessageText = (m: { content?: unknown; parts?: Array<{ type: string; text?: string }> }) => {
     if (typeof m.content === 'string') return m.content;
     if (Array.isArray(m.parts)) {
       return m.parts
-        .filter((p: any) => p.type === 'text')
-        .map((p: any) => p.text)
+        .filter((p) => p.type === 'text')
+        .map((p) => p.text)
         .join('');
     }
     return '';
@@ -61,7 +63,7 @@ export default function ChatNeuriy() {
             </div>
           </div>
         ) : (
-          messages.map(m => (
+          messages.map((m) => (
             <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`flex items-start max-w-[80%] ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${m.role === 'user' ? 'bg-blue-600 ml-3' : 'bg-green-600 mr-3'}`}>
@@ -95,5 +97,32 @@ export default function ChatNeuriy() {
         </form>
       </footer>
     </div>
+  );
+}
+
+export default function ChatNeuriy() {
+  return (
+    <NeuriyAuthGuard
+      fallback={
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black" />
+        </div>
+      }
+      unauthenticated={
+        <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center">
+          <Shield size={48} className="text-gray-300 mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Sign in required</h1>
+          <p className="text-gray-500 mb-6">Chat Neuriy uses your Neuriy nID session from the IDHook auth SDK.</p>
+          <Link
+            href="/auth/login?return=/chat-neuriy"
+            className="bg-black text-white px-6 py-2 rounded-full font-bold"
+          >
+            Sign in
+          </Link>
+        </div>
+      }
+    >
+      {() => <ChatNeuriyInner />}
+    </NeuriyAuthGuard>
   );
 }

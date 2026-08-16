@@ -100,7 +100,7 @@ async function signInWithEmail(email, password) {
     const result = await (0, import_auth2.signInWithEmailAndPassword)(auth, email, password);
     return mapUser(result.user);
   } catch (err) {
-    if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+    if (err.code === "auth/user-not-found") {
       const result = await (0, import_auth2.createUserWithEmailAndPassword)(auth, email, password);
       return mapUser(result.user);
     }
