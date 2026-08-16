@@ -65,10 +65,11 @@ function LoginForm() {
     setError("");
     try {
       await signInWithEmail(email, password);
+      // Let NeuriyAuthProvider observe the session before navigating.
+      await new Promise((r) => setTimeout(r, 150));
       finish();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Sign in failed");
-    } finally {
       setIsLoading(false);
     }
   };

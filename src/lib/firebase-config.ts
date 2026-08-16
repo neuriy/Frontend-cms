@@ -1,6 +1,9 @@
 /**
  * Shared Firebase config — must match the IDHook auth web app
  * (https://github.com/neuriy/IDHook) so both apps share the same nID users.
+ *
+ * Firebase web API keys are public by design (restrict by HTTP referrer /
+ * domain in the Firebase console). Override via NEXT_PUBLIC_FIREBASE_* env.
  */
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "AIzaSyB-wfqzVbPcT5Bf1JvJNGKA3j8K6BPyMhw",

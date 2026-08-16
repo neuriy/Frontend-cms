@@ -34,7 +34,7 @@ export async function signInWithEmail(email: string, password: string): Promise<
     const result = await signInWithEmailAndPassword(auth, email, password);
     return mapUser(result.user);
   } catch (err: any) {
-    if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+    if (err.code === 'auth/user-not-found') {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       return mapUser(result.user);
     }
