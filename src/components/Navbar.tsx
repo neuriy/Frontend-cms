@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { useNeuriyAuth, redirectToNeuriyLogin, signOut } from '@neuriy/auth';
+import { usePathname } from 'next/navigation';
+import { useNeuriyAuth, signOut } from '@neuriy/auth';
+import { startNeuriyLogin } from '@/lib/idhook';
 import { Settings, LogOut, User, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
@@ -11,7 +12,6 @@ interface NavbarProps {
 }
 
 export default function MarketingNavbar({ floating: propFloating }: NavbarProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const { user, loading } = useNeuriyAuth();
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
@@ -19,10 +19,7 @@ export default function MarketingNavbar({ floating: propFloating }: NavbarProps)
   const floating = propFloating !== undefined ? propFloating : isHome;
 
   const handleLogin = () => {
-    const authUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://id.neuriy.com' 
-      : 'http://localhost:3000';
-    redirectToNeuriyLogin(authUrl);
+    startNeuriyLogin(typeof window !== 'undefined' ? window.location.href : '/');
   };
 
   const handleLogout = async () => {

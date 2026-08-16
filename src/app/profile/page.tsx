@@ -17,9 +17,9 @@ export default function ProfilePage() {
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 text-center">
           <Shield size={48} className="text-gray-300 mb-4" />
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-          <p className="text-gray-500 mb-6">Please sign in to view your profile settings.</p>
-          <Link href="/" className="bg-black text-white px-6 py-2 rounded-full font-bold">
-            Go Home
+          <p className="text-gray-500 mb-6">Please sign in with Neuriy nID to view your profile.</p>
+          <Link href="/auth/login?return=/profile" className="bg-black text-white px-6 py-2 rounded-full font-bold">
+            Sign in
           </Link>
         </div>
       }

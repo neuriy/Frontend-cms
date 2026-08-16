@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import AppShell from "@/components/AppShell";
 import { AuthProvider } from "@/lib/neuriy-auth";
 
 const geistSans = Geist({
@@ -17,8 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: 'Neuriy | %s',
-    default: 'Neuriy | App Icon Generator',
+    template: "Neuriy | %s",
+    default: "Neuriy | App Icon Generator",
   },
   description: "Build mobile apps with AI",
 };
@@ -35,11 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#f8fafc]">
         <AuthProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <AppShell>{children}</AppShell>
         </AuthProvider>
       </body>
     </html>
